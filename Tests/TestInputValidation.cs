@@ -22,4 +22,32 @@ public class TestInputValidation
         Assert.That(sanitizedInput, Is.Not.EqualTo(maliciousInput));
         Assert.That(sanitizedInput, Does.Not.Contain("<script>"));
     }
+
+    [Test]
+    public void SanitizeInput_AllowsSafeCharacters()
+    {
+        // Arrange
+        string safeInput = "user.name@example.com";
+        string expectedOutput = "user.name@example.com"; // Safe input should remain unchanged
+
+        // Act
+        string sanitizedInput = InputSanitizer.SanitizeInput(safeInput);
+
+        // Assert
+        Assert.That(sanitizedInput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void SanitizeInput_RemovesUnsafeCharactersFromMixedInput()
+    {
+        // Arrange
+        string mixedInput = "user.name@example.com<script>alert('XSS');</script> OR 1=1";
+        string expectedOutput = "user.name@example.com"; // Only safe characters should remain
+
+        // Act
+        string sanitizedInput = InputSanitizer.SanitizeInput(mixedInput);
+
+        // Assert
+        Assert.That(sanitizedInput, Is.EqualTo(expectedOutput));
+    }
 }

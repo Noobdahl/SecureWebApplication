@@ -1,23 +1,26 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace SecureWebApplication.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly AuthService _authService;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(AuthService authService)
     {
-        _logger = logger;
+        _authService = authService;
     }
 
     [BindProperty]
     public string Username { get; set; } = "";
 
     [BindProperty]
-    public string Email { get; set; } = "";
+    public string Password { get; set; } = "";
 
     public void OnGet()
     {
@@ -27,16 +30,42 @@ public class IndexModel : PageModel
     {
         // Sanitize inputs
         Username = InputSanitizer.SanitizeInput(Username);
-        Email = InputSanitizer.SanitizeInput(Email);
+        Password = InputSanitizer.SanitizeInput(Password);
 
-        // Validate email format
-        if (!Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        if (_authService.AuthenticateUser(Username, Password))
         {
-            ModelState.AddModelError("Email", "Invalid email format.");
-            return Page();
+            // Retrieve user roles from the database
+            var roles = _authService.GetUserRoles(Username);
+
+            // Create user claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, Username)
+            };
+
+            // Add role claims
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Sign in the user
+            Console.WriteLine("Signing in user...");
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
+            Console.WriteLine("User signed in successfully.");
+
+            return RedirectToPage("/Landing");
         }
 
-        // Redirect to the Landing page after successful validation
-        return RedirectToPage("/Landing", new { username = Username, email = Email });
+        ModelState.AddModelError(string.Empty, "Invalid username or password.");
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostLogoutAsync()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToPage("/Index");
     }
 }

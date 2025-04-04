@@ -286,3 +286,9 @@ C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\S
 C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\Microsoft.DotNet.PlatformAbstractions.dll
 C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll
+C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\Castle.Core.dll
+C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\Moq.dll
+C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\xunit.abstractions.dll
+C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\xunit.assert.dll
+C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\xunit.core.dll
+C:\Users\micha\OneDrive\Dokument\Project\CoPilot projects\SecureWebApplication\SecureWebApplication\bin\Debug\net9.0\xunit.execution.dotnet.dll
