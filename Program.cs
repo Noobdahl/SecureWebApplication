@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddMemoryCache(); // Register IMemoryCache
+builder.Services.AddScoped<CacheService>(); // Register CacheService
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthorizationService>();
 

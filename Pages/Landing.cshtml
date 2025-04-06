@@ -7,3 +7,9 @@
 <div class="text-center">
     <h1 class="display-4">Welcome @Model.Username</h1>
 </div>
+<div>
+    <p>Press this button to load products form database(with cache):</p>
+    <form method="post" asp-page-handler="LoadProducts">
+        <button type="submit">Load Products</button>
+    </form>
+</div>
