@@ -3,13 +3,15 @@ using Microsoft.Extensions.Caching.Memory;
 public class CacheService
 {
     private readonly IMemoryCache _cache;
+    private readonly AppDbContext _dbContext;
 
-    public CacheService(IMemoryCache cache)
+    public CacheService(IMemoryCache cache, AppDbContext dbContext)
     {
         _cache = cache;
+        _dbContext = dbContext;
     }
 
-    public bool TryGetProducts(out List<string> products)
+    public bool TryGetProducts(out List<Product> products)
     {
         if (_cache.TryGetValue("Products", out products))
         {
@@ -17,16 +19,21 @@ public class CacheService
         }
 
         // If not in cache, fetch new products
-        products = FetchNewProducts();
+        products = FetchNewProducts()?.ToList() ?? new List<Product>();
         return false;
     }
 
-    private List<string> FetchNewProducts()
+    private List<Product>? FetchNewProducts()
     {
         return _cache.GetOrCreate("Products", entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
-            return new List<string> { "Apple", "Pear", "Banana" }; // Simulated database fetch
+            return FetchProductsFromDatabase();
         });
+    }
+
+    private List<Product>? FetchProductsFromDatabase()
+    {
+        return _dbContext.Products.ToList();
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,10 @@ builder.Services.AddMemoryCache(); // Register IMemoryCache
 builder.Services.AddScoped<CacheService>(); // Register CacheService
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthorizationService>();
+
+// Add AppDbContext with SQL Server
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add authentication services
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme) // Use "Cookies" as the scheme

@@ -20,13 +20,13 @@ public class LandingModel : PageModel
 
     public IActionResult OnPostLoadProducts()
     {
-        if (_cacheService.TryGetProducts(out var products))
+        if (_cacheService.TryGetProducts(out List<Product> products))
         {
-            Message = "Products loaded from cache: " + string.Join(", ", products);
+            Message = "Products loaded from cache: " + string.Join(", ", products.Select(p => p.Name));
         }
         else
         {
-            Message = "Products loaded from dB: " + string.Join(", ", products);
+            Message = "Products loaded from dB: " + string.Join(", ", products.Select(p => p.Name));
         }
         Console.WriteLine(Message);
         return Page();
