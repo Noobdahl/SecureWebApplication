@@ -32,7 +32,7 @@ public class RoleMiddleware
 
         foreach (var claim in context.User.Claims)
         {
-            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            // Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
         }
 
         // Resolve AuthorizationService and check roles

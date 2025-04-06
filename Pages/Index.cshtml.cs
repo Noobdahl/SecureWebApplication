@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace SecureWebApplication.Pages;
 
+[AllowAnonymous] // Allow access to this page without authentication
 public class IndexModel : PageModel
 {
     private readonly AuthService _authService;
@@ -56,7 +58,8 @@ public class IndexModel : PageModel
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity)).Wait();
             Console.WriteLine("User signed in successfully.");
 
-            return RedirectToPage("/Landing");
+            // Redirect to the landing page after successful login
+            return RedirectToPage("/Landing", new { username = Username });
         }
 
         ModelState.AddModelError(string.Empty, "Invalid username or password.");

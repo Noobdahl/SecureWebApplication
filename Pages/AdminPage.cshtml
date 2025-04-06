@@ -6,3 +6,34 @@
 
 <h1>Admin Page</h1>
 <p>Welcome! You have access to this page because you are an Admin.</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <p style="color: green;">@TempData["SuccessMessage"]</p>
+}
+
+<form method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="Username" required />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="Password" required />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" required />
+    </div>
+    <button type="submit">Create User</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <ul style="color: red;">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <li>@error.ErrorMessage</li>
+        }
+    </ul>
+}
